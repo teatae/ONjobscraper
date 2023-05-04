@@ -9,6 +9,7 @@ import shutil
 import os
 import requests
 from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
@@ -304,14 +305,14 @@ cap_Google_jobs = 30 #30
 '''
 
 cap_Indeed = 25 #25
-cap_Jobrapido = 30 #30
-#cap_Stackoverflow = 5 #5
+cap_Jobrapido = 32 #32
+#cap_Stackoverflow = 2 #2
 #cap_Eluta = 100 #100
-cap_Workopolis = 50 #50
-cap_Jobillico = 60 #60
+cap_Workopolis = 5 #50
+cap_Jobillico = 30 #30
 cap_Linkedin = 50 #50
-cap_Monster = 25 #30
-cap_Jobboom = 60 #60
+cap_Monster = 15 #15
+cap_Jobboom = 30 #60
 #cap_Facebook = 40 #40
 cap_Google_jobs = 30 #30
 
@@ -406,6 +407,9 @@ while (i<cap_Indeed):
                             rest_current_data = [(datetime.datetime.now()-datetime.timedelta(days)).strftime("%a %d %b %Y"),"Indeed",pUrl]
                             current_full_data = current_data+rest_current_data
                             taeDataCase(pUrl, current_data, current_full_data, data_Indeed)
+    except TimeoutException:
+        print("\n page "+str(i)+", attempt #"+str(attempt)+" is unsucessful")
+        attempt += 1
     finally:
         i=i+1
 
@@ -427,6 +431,9 @@ while (i<cap_Jobrapido):
             page_soup = soup(webpage.decode('utf-8-sig'),"html.parser")
             page_soup.prettify()
             posts = page_soup.findAll("div", {"class": "result-item__wrapper"})
+        except TimeoutException:
+            print("\n page "+str(i)+", attempt #"+str(attempt)+" is unsucessful")
+            attempt += 1
         finally:
             attempt += 1
             print("\n"+str(len(posts))+" jobs processed for page "+str(i)+", attempt #"+str(attempt))
@@ -600,7 +607,6 @@ while (i<cap_Eluta):
             rest_current_data = [(datetime.datetime.now()-datetime.timedelta(days)).strftime("%a %d %b %Y"),"Eluta",pUrl]
             current_full_data = current_data+rest_current_data
             taeDataCase(pUrl, current_data, current_full_data, data_Eluta)
-'''
 
 i=0
 while (i<cap_Workopolis):
@@ -616,6 +622,9 @@ while (i<cap_Workopolis):
             page_soup = soup(webpage.decode('utf-8-sig'),"html.parser")
             page_soup.prettify()
             posts = page_soup.find_all("article", {"class":"SerpJob"})
+        except TimeoutException:
+            print("\n page "+str(i)+", attempt #"+str(attempt)+" is unsucessful")
+            attempt += 1
         finally:
             attempt += 1
             print("\n"+str(len(posts))+" jobs processed for page "+str(i)+", attempt #"+str(attempt))
@@ -654,6 +663,7 @@ while (i<cap_Workopolis):
         rest_current_data = [datetime.datetime.strptime(daysStr,"%Y-%m-%d").strftime("%a %d %b %Y"),"Workopolis",pUrl]
         current_full_data = current_data+rest_current_data
         taeDataCase(pUrl, current_data, current_full_data, data_Workopolis)
+'''
 
 
 i=0
@@ -670,6 +680,9 @@ while (i<cap_Jobillico):
             page_soup = soup(webpage.decode('utf-8-sig'),"html.parser")
             page_soup.prettify()
             posts = page_soup.find_all("article", ref=lambda x: x and x.startswith("job"))
+        except TimeoutException:
+            print("\n page "+str(i)+", attempt #"+str(attempt)+" is unsucessful")
+            attempt += 1
         finally:
             attempt += 1
             print("\n"+str(len(posts))+" jobs processed for page "+str(i)+", attempt #"+str(attempt))
@@ -734,6 +747,9 @@ while (i<cap_Jobillico):
             page_soup = soup(webpage.decode('utf-8-sig'),"html.parser")
             page_soup.prettify()
             posts = page_soup.find_all("article", ref=lambda x: x and x.startswith("job"))
+        except TimeoutException:
+            print("\n page "+str(i)+", attempt #"+str(attempt)+" is unsucessful")
+            attempt += 1
         finally:
             attempt += 1
             print("\n"+str(len(posts))+" jobs processed for page "+str(i)+", attempt #"+str(attempt))
